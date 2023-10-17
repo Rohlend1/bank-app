@@ -21,6 +21,7 @@
         <module>discovery-server</module>
         <module>transaction-service</module>
         <module>api-gateway</module>
+        <module>demo</module>
     </modules>
     <dependencies>
 

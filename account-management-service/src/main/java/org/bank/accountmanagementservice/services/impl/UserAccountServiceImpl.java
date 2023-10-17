@@ -1,13 +1,12 @@
 package org.bank.accountmanagementservice.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.bank.accountmanagementservice.models.User;
 import org.bank.accountmanagementservice.models.UserAccount;
 import org.bank.accountmanagementservice.repositories.UserAccountRepository;
 import org.bank.accountmanagementservice.services.UserAccountService;
 import org.bank.accountmanagementservice.utils.errors.ModelNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
@@ -45,6 +44,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public boolean isTransactionAllowed(MultiValueMap<String, String> dataToCheck){
         UserAccount senderAccount = userAccountRepository.findByNumber(dataToCheck.get("accountNumbers").get(0)).orElseThrow(ModelNotFoundException::new);
         UserAccount receiverAccount = userAccountRepository.findByNumber(dataToCheck.get("accountNumbers").get(1)).orElseThrow(ModelNotFoundException::new);

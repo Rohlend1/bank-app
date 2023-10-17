@@ -11,10 +11,6 @@
 	<artifactId>discovery-server</artifactId>
 	<version>1.0</version>
 	<name>discovery-server</name>
-	<properties>
-		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.4</spring-cloud.version>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
