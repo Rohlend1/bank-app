@@ -7,6 +7,7 @@ import org.bank.transactionservice.repositories.TransactionRepository;
 import org.bank.transactionservice.services.TransactionService;
 import org.bank.transactionservice.utils.enums.Status;
 import org.bank.transactionservice.utils.errors.TransactionFailedException;
+import org.bank.transactionservice.utils.mappers.TransactionMapper;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -26,6 +27,8 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
 
     private final WebClient webClient;
+
+    private final TransactionMapper transactionMapper;
 
     private final StampedLock lock = new StampedLock();
 
@@ -47,7 +50,7 @@ public class TransactionServiceImpl implements TransactionService {
                     .bodyToMono(Boolean.class)
                     .block();
 
-            Transaction transaction = new Transaction(dto.getSenderAccountNumber(), dto.getReceiverAccountNumber(), dto.getDescription(), dto.getAmount());
+            Transaction transaction = transactionMapper.toEntity(dto);
 
             if (Boolean.TRUE.equals(isPossible)) {
                 transaction.setStatus(Status.ACCEPTED);

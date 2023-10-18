@@ -1,13 +1,13 @@
 package org.bank.accountmanagementservice.services;
 
-import org.bank.accountmanagementservice.models.Card;
+import org.bank.accountmanagementservice.dto.CardCreationDto;
+import org.bank.accountmanagementservice.dto.CardResponseDto;
 
 import java.util.List;
 
 public interface CardService {
 
-    List<Card> findAll();
-    void save(Card card);
-    void delete(Long id);
-    Card findById(Long id);
+    List<CardResponseDto> findAllByUserAccountNumber(String number);
+    void save(CardCreationDto card);
+    void blockCard(String cardNumber);
 }

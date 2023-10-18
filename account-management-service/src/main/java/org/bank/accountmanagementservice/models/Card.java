@@ -3,9 +3,9 @@ package org.bank.accountmanagementservice.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bank.accountmanagementservice.utils.enums.PaymentSystem;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Table(name = "card")
 @Data
@@ -19,7 +19,7 @@ public class Card {
     private Long id;
 
     @Column(name = "number")
-    private Long number;
+    private String number;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
@@ -32,5 +32,12 @@ public class Card {
     private LocalDate releaseDate;
 
     @Column(name = "cvv")
-    private Integer cvv;
+    private String cvv;
+
+    @Column(name = "payment_system")
+    @Enumerated(EnumType.STRING)
+    private PaymentSystem paymentSystem;
+
+    @Column(name = "blocked")
+    private Boolean blocked;
 }

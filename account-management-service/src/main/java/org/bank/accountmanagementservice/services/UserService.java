@@ -1,19 +1,15 @@
 package org.bank.accountmanagementservice.services;
 
-import org.bank.accountmanagementservice.models.User;
-import org.bank.accountmanagementservice.utils.errors.ModelNotFoundException;
+import org.bank.accountmanagementservice.dto.UserDto;
+import org.bank.accountmanagementservice.dto.UserUpdateDto;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> findAll();
+    void save(UserDto user);
 
-    void save(User user);
+    UserDto findByUniqueId(String id);
 
-    void delete(Long id);
-
-    User findById(Long id);
-
-    void update(User user);
+    void update(UserUpdateDto user);
 }

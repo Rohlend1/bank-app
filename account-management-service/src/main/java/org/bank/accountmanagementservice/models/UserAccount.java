@@ -33,6 +33,9 @@ public class UserAccount {
     @Column(name = "balance")
     private BigDecimal balance;
 
+    @Column(name = "active")
+    private Boolean active;
+
     @PrePersist
     public void generateUUID(){
         number = UUID.randomUUID().toString();

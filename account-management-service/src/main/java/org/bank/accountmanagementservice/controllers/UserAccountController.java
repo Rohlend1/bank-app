@@ -1,9 +1,8 @@
 package org.bank.accountmanagementservice.controllers;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.bank.accountmanagementservice.models.User;
-import org.bank.accountmanagementservice.models.UserAccount;
+import org.bank.accountmanagementservice.dto.ReplenishBalanceDto;
+import org.bank.accountmanagementservice.dto.UserAccountDto;
 import org.bank.accountmanagementservice.services.UserAccountService;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -13,39 +12,37 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user-account")
-@Slf4j
 public class UserAccountController {
 
     private final UserAccountService userAccountService;
 
     @GetMapping
-    public List<UserAccount> findAll(){
-        return userAccountService.findAll();
+    public List<UserAccountDto> findAllByUserPhoneNumber(@RequestParam String uniqueNumber){
+        return userAccountService.findAllByUserUniqueId(uniqueNumber);
     }
 
     @PostMapping
-    public void save(@RequestBody UserAccount userAccount){
-        userAccountService.save(userAccount);
-    }
-
-    @DeleteMapping("{id}")
-    public void delete(@PathVariable("id")Long id){
-        userAccountService.delete(id);
+    public void save(@RequestBody UserAccountDto dto){
+        userAccountService.save(dto);
     }
 
     @GetMapping("{id}")
-    public UserAccount findById(@PathVariable("id")Long id){
+    public UserAccountDto findById(@PathVariable("id")Long id){
         return userAccountService.findById(id);
     }
 
-    @PutMapping
-    public void update(@RequestBody UserAccount userAccount){
-        userAccountService.update(userAccount);
+    @PostMapping("/close")
+    public void closeAccount(@RequestBody String accountNumber){
+        userAccountService.closeAccount(accountNumber);
+    }
+
+    @PatchMapping("/close")
+    public void topUpBalance(@RequestBody ReplenishBalanceDto dto){
+        userAccountService.topUpBalance(dto);
     }
 
     @GetMapping("/check")
-    public Boolean isTransactionAllowed(@RequestParam MultiValueMap<String, String> dataToCheck){
-        log.info(dataToCheck.toString());
-        return userAccountService.isTransactionAllowed(dataToCheck);
+    public Boolean doTransactionIfAllowed(@RequestParam MultiValueMap<String, String> dataToCheck){
+        return userAccountService.doTransactionIfAllowed(dataToCheck);
     }
 }

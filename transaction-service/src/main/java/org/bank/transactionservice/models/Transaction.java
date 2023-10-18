@@ -43,13 +43,6 @@ public class Transaction {
     @PrePersist
     public void setTransactionTime(){
         ZoneId zoneId = ZoneId.of("Europe/Moscow");
-        LocalDateTime transactionTime = LocalDateTime.now(zoneId);
-    }
-
-    public Transaction(String senderAccountNumber, String receiverAccountNumber, String description, BigDecimal amount) {
-        this.senderAccountNumber = senderAccountNumber;
-        this.receiverAccountNumber = receiverAccountNumber;
-        this.description = description;
-        this.amount = amount;
+        transactionTime = LocalDateTime.now(zoneId);
     }
 }

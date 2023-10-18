@@ -1,7 +1,8 @@
 package org.bank.accountmanagementservice.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.bank.accountmanagementservice.models.Card;
+import org.bank.accountmanagementservice.dto.CardCreationDto;
+import org.bank.accountmanagementservice.dto.CardResponseDto;
 import org.bank.accountmanagementservice.services.CardService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,20 +15,17 @@ public class CardController {
 
     private final CardService cardService;
 
-    @GetMapping
-    public List<Card> findAll(){
-        return cardService.findAll();
+    @PostMapping("/all")
+    public List<CardResponseDto> findAll(@RequestBody String number){
+        return cardService.findAllByUserAccountNumber(number);
     }
     @PostMapping
-    public void save(@RequestBody Card card){
-        cardService.save(card);
+    public void save(@RequestBody CardCreationDto dto){
+        cardService.save(dto);
     }
-    @DeleteMapping("{id}")
-    public void delete(@PathVariable("id")Long id){
-        cardService.delete(id);
-    }
-    @GetMapping("{id}")
-    public Card findById(@PathVariable("id")Long id){
-        return cardService.findById(id);
+
+    @PostMapping("/block")
+    public void blockCard(@RequestBody String cardNumber){
+        cardService.blockCard(cardNumber);
     }
 }
