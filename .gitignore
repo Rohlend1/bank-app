@@ -2,6 +2,7 @@
 /transaction-service/HELP.md
 /transaction-service/mvnw.cmd
 /transaction-service/mvnw
+/transaction-service/target
 /account-management-service/target
 /account-management-service/HELP.md
 /account-management-service/mvnw.cmd

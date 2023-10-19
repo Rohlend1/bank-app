@@ -1,5 +1,6 @@
 package org.bank.transactionservice.services.impl;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import org.bank.transactionservice.dto.TransferMoneyDto;
 import org.bank.transactionservice.models.Transaction;
@@ -8,7 +9,6 @@ import org.bank.transactionservice.services.TransactionService;
 import org.bank.transactionservice.utils.enums.Status;
 import org.bank.transactionservice.utils.errors.TransactionFailedException;
 import org.bank.transactionservice.utils.mappers.TransactionMapper;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +34,7 @@ public class TransactionServiceImpl implements TransactionService {
 
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    @Retryable(maxAttempts = 15)
+    @Retry(name = "transaction")
     public void transferMoney(TransferMoneyDto dto) {
         long stamp = lock.writeLock();
         try {

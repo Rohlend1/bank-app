@@ -6,6 +6,7 @@ import org.bank.accountmanagementservice.dto.UserAccountDto;
 import org.bank.accountmanagementservice.models.UserAccount;
 import org.bank.accountmanagementservice.repositories.UserAccountRepository;
 import org.bank.accountmanagementservice.services.UserAccountService;
+import org.bank.accountmanagementservice.utils.enums.AccountType;
 import org.bank.accountmanagementservice.utils.errors.ModelNotFoundException;
 import org.bank.accountmanagementservice.utils.mappers.UserAccountMapper;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         BigDecimal transactionAmount = new BigDecimal(dataToCheck.get("amount").get(0));
 
 
-        if(senderAccount.getBalance().compareTo(transactionAmount) >= 0 && senderAccount.getActive() && receiverAccount.getActive()){
+        if(isAllowed(senderAccount, receiverAccount, transactionAmount)){
             senderAccount.setBalance(senderAccount.getBalance().subtract(transactionAmount));
             receiverAccount.setBalance(receiverAccount.getBalance().add(transactionAmount));
             return true;
@@ -67,5 +68,15 @@ public class UserAccountServiceImpl implements UserAccountService {
         else{
             return false;
         }
+    }
+
+    private boolean isAllowed(UserAccount sender, UserAccount receiver, BigDecimal amount){
+        if(receiver.getActive().equals(Boolean.FALSE)) return false;
+        if(amount.compareTo(BigDecimal.ZERO) <= 0) return false;
+        if(sender.getType() == AccountType.DEPOSIT && sender.getActive().equals(Boolean.TRUE)) return false;
+        if(sender.getActive().equals(Boolean.FALSE)) return false;
+        if(sender.getType() == AccountType.INVESTMENT && receiver.getType() != AccountType.CHECKING) return false;
+        if(sender.getBalance().compareTo(amount) < 0) return false;
+        return true;
     }
 }
