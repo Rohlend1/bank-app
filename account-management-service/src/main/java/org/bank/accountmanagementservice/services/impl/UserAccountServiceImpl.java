@@ -3,8 +3,10 @@ package org.bank.accountmanagementservice.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.bank.accountmanagementservice.dto.ReplenishBalanceDto;
 import org.bank.accountmanagementservice.dto.UserAccountDto;
+import org.bank.accountmanagementservice.models.User;
 import org.bank.accountmanagementservice.models.UserAccount;
 import org.bank.accountmanagementservice.repositories.UserAccountRepository;
+import org.bank.accountmanagementservice.repositories.UserRepository;
 import org.bank.accountmanagementservice.services.UserAccountService;
 import org.bank.accountmanagementservice.utils.enums.AccountType;
 import org.bank.accountmanagementservice.utils.errors.ModelNotFoundException;
@@ -27,13 +29,19 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     private final UserAccountMapper userAccountMapper;
 
+    private final UserRepository userRepository;
+
+
     @Transactional(readOnly = true)
     public List<UserAccountDto> findAllByUserUniqueId(String uniqueNumber){
         return userAccountMapper.toDto(userAccountRepository.findAllByUserUniqueId(UUID.fromString(uniqueNumber)));
     }
 
     public void save(UserAccountDto dto){
-        userAccountRepository.save(userAccountMapper.toEntity(dto));
+        User user = userRepository.findById(dto.getUserId()).orElseThrow(ModelNotFoundException::new);
+        UserAccount userAccount = userAccountMapper.toEntity(dto);
+        userAccount.setUser(user);
+        user.getUserAccounts().add(userAccount);
     }
 
     public void topUpBalance(ReplenishBalanceDto dto) {

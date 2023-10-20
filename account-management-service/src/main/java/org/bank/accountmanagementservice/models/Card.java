@@ -2,6 +2,7 @@ package org.bank.accountmanagementservice.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.bank.accountmanagementservice.utils.enums.PaymentSystem;
 
@@ -23,6 +24,7 @@ public class Card {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+    @EqualsAndHashCode.Exclude
     private UserAccount userAccount;
 
     @Column(name = "expired_date")

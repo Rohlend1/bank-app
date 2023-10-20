@@ -31,12 +31,13 @@ public class TransactionController {
     }
 
     @ExceptionHandler(value = {TransactionFailedException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public String exceptionHandle(Exception e){
         return String.format("%s \nwas caught at %s", e.getMessage(), LocalDateTime.now());
     }
 
     @ResponseStatus(code = HttpStatus.SERVICE_UNAVAILABLE)
-    public String fallback(){
+    public String fallback(TransferMoneyDto dto, Throwable throwable){
         return "Service is not working try to transfer money later";
     }
 }

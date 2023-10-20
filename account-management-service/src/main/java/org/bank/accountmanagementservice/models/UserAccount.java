@@ -2,7 +2,9 @@ package org.bank.accountmanagementservice.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.bank.accountmanagementservice.utils.enums.AccountType;
 
 import java.math.BigDecimal;
@@ -24,6 +26,8 @@ public class UserAccount {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private User user;
 
     @Column(name = "type")

@@ -1,17 +1,19 @@
 package org.bank.accountmanagementservice.utils.security;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
+@Component
 public class AesEncoder {
 
     @Value("${secret}")
-    public static String aesSecretKey;
+    public String aesSecretKey;
 
-    public static String encode(String data){
+    public String encode(String data){
         try {
             Cipher cipher = Cipher.getInstance("AES");
             SecretKeySpec secretKeySpec = new SecretKeySpec(aesSecretKey.getBytes(), "AES");
@@ -23,7 +25,7 @@ public class AesEncoder {
         }
     }
 
-    public static String decode(String encryptedData){
+    public String decode(String encryptedData){
         try {
             Cipher cipher = Cipher.getInstance("AES");
             SecretKeySpec secretKeySpec = new SecretKeySpec(aesSecretKey.getBytes(), "AES");

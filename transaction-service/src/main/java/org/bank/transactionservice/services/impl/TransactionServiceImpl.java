@@ -60,6 +60,9 @@ public class TransactionServiceImpl implements TransactionService {
                 throw new TransactionFailedException();
             }
         }
+        catch (Exception e){
+            throw new TransactionFailedException();
+        }
         finally {
             lock.unlockWrite(stamp);
         }

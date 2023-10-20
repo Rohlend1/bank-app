@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.bank.accountmanagementservice.dto.ReplenishBalanceDto;
 import org.bank.accountmanagementservice.dto.UserAccountDto;
 import org.bank.accountmanagementservice.services.UserAccountService;
+import org.bank.accountmanagementservice.utils.errors.ModelNotFoundException;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -17,7 +19,7 @@ public class UserAccountController {
     private final UserAccountService userAccountService;
 
     @GetMapping
-    public List<UserAccountDto> findAllByUserPhoneNumber(@RequestParam String uniqueNumber){
+    public List<UserAccountDto> findAllByUserUniqueId(@RequestParam String uniqueNumber){
         return userAccountService.findAllByUserUniqueId(uniqueNumber);
     }
 
@@ -44,5 +46,10 @@ public class UserAccountController {
     @GetMapping("/check")
     public Boolean doTransactionIfAllowed(@RequestParam MultiValueMap<String, String> dataToCheck){
         return userAccountService.doTransactionIfAllowed(dataToCheck);
+    }
+
+    @ExceptionHandler(value = {ModelNotFoundException.class})
+    public String exceptionHandle(Exception e){
+        return String.format("%s\nwas caught at %s", e.getMessage(), LocalDateTime.now());
     }
 }

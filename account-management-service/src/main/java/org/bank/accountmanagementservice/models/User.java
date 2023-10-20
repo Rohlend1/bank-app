@@ -2,6 +2,7 @@ package org.bank.accountmanagementservice.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -32,6 +33,7 @@ public class User {
     private String patronymic;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+    @EqualsAndHashCode.Exclude
     private Set<UserAccount> userAccounts;
 
     @Column(name = "birth_date")

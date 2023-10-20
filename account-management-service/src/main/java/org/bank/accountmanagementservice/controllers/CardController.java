@@ -1,6 +1,7 @@
 package org.bank.accountmanagementservice.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.bank.accountmanagementservice.dto.AccountNumberRequestDto;
 import org.bank.accountmanagementservice.dto.CardCreationDto;
 import org.bank.accountmanagementservice.dto.CardResponseDto;
 import org.bank.accountmanagementservice.services.CardService;
@@ -16,8 +17,8 @@ public class CardController {
     private final CardService cardService;
 
     @PostMapping("/all")
-    public List<CardResponseDto> findAll(@RequestBody String number){
-        return cardService.findAllByUserAccountNumber(number);
+    public List<CardResponseDto> findAll(@RequestBody AccountNumberRequestDto dto){
+        return cardService.findAllByUserAccountNumber(dto.getAccountNumber());
     }
     @PostMapping
     public void save(@RequestBody CardCreationDto dto){
