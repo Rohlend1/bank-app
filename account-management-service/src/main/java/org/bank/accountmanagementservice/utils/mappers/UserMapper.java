@@ -8,6 +8,7 @@ import org.bank.accountmanagementservice.models.UserAccount;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,11 +26,11 @@ public interface UserMapper {
     User toEntity(UserUpdateDto dto);
 
     default Set<Long> getUserAccountIds(Set<UserAccount> userAccounts){
-        return userAccounts == null ? null : userAccounts.stream().map(UserAccount::getId).collect(Collectors.toSet());
+        return userAccounts == null ? new HashSet<>() : userAccounts.stream().map(UserAccount::getId).collect(Collectors.toSet());
     }
 
     default Set<UserAccount> getUserAccount(Set<Long> userAccountIds){
-        return userAccountIds == null ? null : userAccountIds.stream().map(id->{
+        return userAccountIds == null ? new HashSet<>() : userAccountIds.stream().map(id->{
             UserAccount userAccount = new UserAccount();
             userAccount.setId(id);
             return userAccount;
