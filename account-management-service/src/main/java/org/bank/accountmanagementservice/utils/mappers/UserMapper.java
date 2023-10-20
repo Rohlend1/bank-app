@@ -25,11 +25,11 @@ public interface UserMapper {
     User toEntity(UserUpdateDto dto);
 
     default Set<Long> getUserAccountIds(Set<UserAccount> userAccounts){
-        return userAccounts.stream().map(UserAccount::getId).collect(Collectors.toSet());
+        return userAccounts == null ? null : userAccounts.stream().map(UserAccount::getId).collect(Collectors.toSet());
     }
 
     default Set<UserAccount> getUserAccount(Set<Long> userAccountIds){
-        return userAccountIds.stream().map(id->{
+        return userAccountIds == null ? null : userAccountIds.stream().map(id->{
             UserAccount userAccount = new UserAccount();
             userAccount.setId(id);
             return userAccount;
