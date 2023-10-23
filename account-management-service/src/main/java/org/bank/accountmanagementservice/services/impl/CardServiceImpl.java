@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +37,7 @@ public class CardServiceImpl implements CardService {
     private final AesEncoder aesEncoder;
 
     @Transactional(readOnly = true)
-    public List<CardResponseDto> findAllByUserAccountNumber(String number){
+    public List<CardResponseDto> findAllByUserAccountNumber(UUID number){
         List<Card> cards = cardRepository.findAllByUserAccountNumber(number);
         cards.forEach(card -> {
             card.setNumber(aesEncoder.decode(card.getNumber()));
@@ -46,7 +47,7 @@ public class CardServiceImpl implements CardService {
     }
 
     public void save(CardCreationDto dto){
-        UserAccount userAccount = userAccountRepository.findById(dto.getUserAccountId()).orElseThrow(ModelNotFoundException::new);
+        UserAccount userAccount = userAccountRepository.findByNumber(dto.getUserAccountNumber()).orElseThrow(ModelNotFoundException::new);
         ZoneId zoneId = ZoneId.of("Europe/Moscow");
         Card card = cardMapper.toEntity(dto);
         card.setUserAccount(userAccount);

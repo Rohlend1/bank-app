@@ -38,7 +38,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     public void save(UserAccountDto dto){
-        User user = userRepository.findById(dto.getUserId()).orElseThrow(ModelNotFoundException::new);
+        User user = userRepository.findByUniqueUserId(dto.getUserId()).orElseThrow(ModelNotFoundException::new);
         UserAccount userAccount = userAccountMapper.toEntity(dto);
         userAccount.setUser(user);
         user.getUserAccounts().add(userAccount);
@@ -51,7 +51,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         }
     }
 
-    public void closeAccount(String accountNumber) {
+    public void closeAccount(UUID accountNumber) {
        UserAccount userAccount = userAccountRepository.findByNumber(accountNumber).orElseThrow(ModelNotFoundException::new);
        userAccount.setActive(false);
     }
@@ -63,8 +63,8 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public boolean doTransactionIfAllowed(MultiValueMap<String, String> dataToCheck){
-        UserAccount senderAccount = userAccountRepository.findByNumber(dataToCheck.get("accountNumbers").get(0)).orElseThrow(ModelNotFoundException::new);
-        UserAccount receiverAccount = userAccountRepository.findByNumber(dataToCheck.get("accountNumbers").get(1)).orElseThrow(ModelNotFoundException::new);
+        UserAccount senderAccount = userAccountRepository.findByNumber(UUID.fromString(dataToCheck.get("accountNumbers").get(0))).orElseThrow(ModelNotFoundException::new);
+        UserAccount receiverAccount = userAccountRepository.findByNumber(UUID.fromString(dataToCheck.get("accountNumbers").get(1))).orElseThrow(ModelNotFoundException::new);
         BigDecimal transactionAmount = new BigDecimal(dataToCheck.get("amount").get(0));
 
 

@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.bank.accountmanagementservice.utils.enums.AccountType;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,7 +13,7 @@ public class UserAccountDto {
 
     private String number;
 
-    private Long userId;
+    private UUID userId;
 
     private AccountType type;
 

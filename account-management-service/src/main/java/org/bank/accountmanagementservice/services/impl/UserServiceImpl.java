@@ -5,6 +5,7 @@ import org.bank.accountmanagementservice.dto.UserDto;
 import org.bank.accountmanagementservice.dto.UserUpdateDto;
 import org.bank.accountmanagementservice.repositories.UserRepository;
 import org.bank.accountmanagementservice.services.UserService;
+import org.bank.accountmanagementservice.utils.errors.ModelNotFoundException;
 import org.bank.accountmanagementservice.utils.mappers.UserMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     public UserDto findByUniqueId(String id){
-        return userMapper.toDto(userRepository.findByUniqueUserId(UUID.fromString(id)));
+        return userMapper.toDto(userRepository.findByUniqueUserId(UUID.fromString(id)).orElseThrow(ModelNotFoundException::new));
     }
 
     public void save(UserDto user){

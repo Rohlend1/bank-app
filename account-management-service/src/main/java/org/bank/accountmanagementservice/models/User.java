@@ -23,7 +23,7 @@ public class User {
     @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "unique_user_id")
+    @Column(name = "unique_user_id", unique = true, updatable = false)
     private UUID uniqueUserId;
 
     @Column(name = "last_name")

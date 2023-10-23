@@ -10,9 +10,9 @@ import java.util.List;
 @Mapper
 public interface UserAccountMapper {
 
-    @Mapping(source = "userId", target = "user.id")
+    @Mapping(source = "userId", target = "user.uniqueUserId")
     UserAccount toEntity(UserAccountDto dto);
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "user.uniqueUserId", target = "userId")
     UserAccountDto toDto(UserAccount userAccount);
     List<UserAccountDto> toDto(List<UserAccount> userAccounts);
 }

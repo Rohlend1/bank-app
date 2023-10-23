@@ -11,9 +11,9 @@ import java.util.List;
 @Mapper
 public interface CardMapper {
 
-    @Mapping(source = "userAccountId", target = "userAccount.id")
+    @Mapping(source = "userAccountNumber", target = "userAccount.number")
     Card toEntity(CardCreationDto dto);
-    @Mapping(target = "userAccountId", source = "userAccount.id")
+    @Mapping(target = "userAccountNumber", source = "userAccount.number")
     CardResponseDto toResponseDto(Card card);
     List<CardResponseDto> toResponseDtos(List<Card> cards);
 }

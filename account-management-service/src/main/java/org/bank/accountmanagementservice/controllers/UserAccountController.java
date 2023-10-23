@@ -1,6 +1,7 @@
 package org.bank.accountmanagementservice.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.bank.accountmanagementservice.dto.AccountNumberRequestDto;
 import org.bank.accountmanagementservice.dto.ReplenishBalanceDto;
 import org.bank.accountmanagementservice.dto.UserAccountDto;
 import org.bank.accountmanagementservice.services.UserAccountService;
@@ -34,11 +35,11 @@ public class UserAccountController {
     }
 
     @PostMapping("/close")
-    public void closeAccount(@RequestBody String accountNumber){
-        userAccountService.closeAccount(accountNumber);
+    public void closeAccount(@RequestBody AccountNumberRequestDto dto){
+        userAccountService.closeAccount(dto.getAccountNumber());
     }
 
-    @PatchMapping("/close")
+    @PatchMapping("/topUp")
     public void topUpBalance(@RequestBody ReplenishBalanceDto dto){
         userAccountService.topUpBalance(dto);
     }

@@ -12,11 +12,12 @@ import java.util.UUID;
 @Setter
 public class UserUpdateDto {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
     private String firstName;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID uniqueUserId;
 
     private String lastName;

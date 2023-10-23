@@ -21,11 +21,11 @@ public class UserAccount {
     @Column(name="account_id")
     private Long id;
 
-    @Column(name = "number")
-    private String number;
+    @Column(name = "number", updatable = false, unique = true)
+    private UUID number;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "unique_user_id", updatable = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private User user;
@@ -42,6 +42,6 @@ public class UserAccount {
 
     @PrePersist
     public void generateUUID(){
-        number = UUID.randomUUID().toString();
+        number = UUID.randomUUID();
     }
 }

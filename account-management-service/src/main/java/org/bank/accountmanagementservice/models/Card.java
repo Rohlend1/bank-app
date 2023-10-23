@@ -19,21 +19,21 @@ public class Card {
     @Column(name = "card_id")
     private Long id;
 
-    @Column(name = "number")
+    @Column(name = "number", updatable = false)
     private String number;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+    @JoinColumn(name = "account_id", referencedColumnName = "number", updatable = false)
     @EqualsAndHashCode.Exclude
     private UserAccount userAccount;
 
-    @Column(name = "expired_date")
+    @Column(name = "expired_date", updatable = false)
     private LocalDate expiredDate;
 
-    @Column(name = "release_date")
+    @Column(name = "release_date", updatable = false)
     private LocalDate releaseDate;
 
-    @Column(name = "cvv")
+    @Column(name = "cvv", updatable = false)
     private String cvv;
 
     @Column(name = "payment_system")

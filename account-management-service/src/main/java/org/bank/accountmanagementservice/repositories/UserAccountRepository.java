@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Repository
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {
-    Optional<UserAccount> findByNumber(String accountNumber);
+    Optional<UserAccount> findByNumber(UUID accountNumber);
 
     @Query(value = "SELECT usac FROM UserAccount usac JOIN usac.user u WHERE u.uniqueUserId = :uniqueId")
     List<UserAccount> findAllByUserUniqueId(UUID uniqueId);

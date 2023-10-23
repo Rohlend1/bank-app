@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.bank.accountmanagementservice.utils.enums.PaymentSystem;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ public class CardResponseDto {
     private Long number;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long userAccountId;
+    private UUID userAccountNumber;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDate expiredDate;

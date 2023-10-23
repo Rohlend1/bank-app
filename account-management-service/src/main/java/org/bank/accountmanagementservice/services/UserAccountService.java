@@ -5,6 +5,7 @@ import org.bank.accountmanagementservice.dto.UserAccountDto;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserAccountService {
 
@@ -12,7 +13,7 @@ public interface UserAccountService {
 
     void save(UserAccountDto userAccount);
     void topUpBalance(ReplenishBalanceDto dto);
-    void closeAccount(String accountNumber);
+    void closeAccount(UUID accountNumber);
 
     UserAccountDto findById(Long id);
 
