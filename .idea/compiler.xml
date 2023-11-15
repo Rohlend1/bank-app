@@ -21,8 +21,8 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar" />
         </processorPath>
         <module name="api-gateway" />
-        <module name="transaction-service" />
         <module name="account-management-service" />
+        <module name="transaction-service" />
         <module name="discovery-server" />
       </profile>
     </annotationProcessing>

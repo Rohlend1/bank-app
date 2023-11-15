@@ -30,7 +30,7 @@ public class UserAccountController {
     }
 
     @GetMapping("{id}")
-    public UserAccountDto findById(@PathVariable("id")Long id){
+    public UserAccountDto findById(@PathVariable("id") Long id){
         return userAccountService.findById(id);
     }
 
