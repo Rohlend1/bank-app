@@ -44,7 +44,7 @@ public class UserAccountController {
         userAccountService.topUpBalance(dto);
     }
 
-    @GetMapping("/check")
+    @GetMapping("/check-and-do")
     public Boolean doTransactionIfAllowed(@RequestParam MultiValueMap<String, String> dataToCheck){
         return userAccountService.doTransactionIfAllowed(dataToCheck);
     }

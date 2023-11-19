@@ -1,10 +1,14 @@
 package org.bank.notificationservice.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import org.bankApp.util.MessageType;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
+@Data
 public class Notification {
 
     @Id
@@ -17,4 +21,10 @@ public class Notification {
 
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
+
+    @Column(name = "account_number")
+    private UUID accountNumber;
+
+    @Enumerated(EnumType.STRING)
+    private MessageType type;
 }

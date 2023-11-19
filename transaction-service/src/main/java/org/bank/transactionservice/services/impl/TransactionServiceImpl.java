@@ -43,7 +43,7 @@ public class TransactionServiceImpl implements TransactionService {
             parametersToCheck.put("amount", List.of(dto.getAmount().toString()));
             Boolean isPossible = webClient
                     .get()
-                    .uri("http://account-management-service/user-account/check",
+                    .uri("http://account-management-service/user-account/check-and-do",
                             uriBuilder ->
                                     uriBuilder.queryParams(parametersToCheck).build())
                     .retrieve()

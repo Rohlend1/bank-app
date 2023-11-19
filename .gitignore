@@ -17,3 +17,7 @@
 /discovery-server/mvnw
 .profileconfig.json
 profile.jfr
+/notification-service/mvnw
+/notification-service/mvnw.cmd
+/notification-service/HELP.md
+/notification-service/target

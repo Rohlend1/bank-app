@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -23,7 +24,13 @@ public class NotificationService {
         notificationRepository.save(notificationMapper.toEntity(notificationDto));
     }
 
+    @Transactional(readOnly = true)
     public List<NotificationDto> findAll(){
         return notificationMapper.toDtoList(notificationRepository.findAll());
+    }
+
+    @Transactional(readOnly = true)
+    public List<NotificationDto> findAllByAccountNumber(UUID accountNumber){
+        return notificationMapper.toDtoList(notificationRepository.findAllByAccountNumberEquals(accountNumber));
     }
 }

@@ -12,6 +12,7 @@ import org.bank.accountmanagementservice.utils.enums.AccountType;
 import org.bank.accountmanagementservice.utils.errors.ModelNotFoundException;
 import org.bank.accountmanagementservice.utils.mappers.UserAccountMapper;
 import org.bankApp.kafka.KafkaMessage;
+import org.bankApp.util.MessageType;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -76,10 +77,11 @@ public class UserAccountServiceImpl implements UserAccountService {
         if(isAllowed(senderAccount, receiverAccount, transactionAmount)){
             senderAccount.setBalance(senderAccount.getBalance().subtract(transactionAmount));
             receiverAccount.setBalance(receiverAccount.getBalance().add(transactionAmount));
-            kafkaTemplate.send("notification-topic", new KafkaMessage(LocalDateTime.now(), "SUCCESSFUL TRANSACTION-"+UUID.randomUUID()));
+            kafkaTemplate.send("notification-topic", new KafkaMessage(LocalDateTime.now(), "SUCCESSFUL TRANSACTION", receiverAccount.getNumber(), MessageType.TRANSACTION));
             return true;
         }
         else{
+            kafkaTemplate.send("notification-topic", new KafkaMessage(LocalDateTime.now(), "TRANSACTION FAILED", senderAccount.getNumber(), MessageType.ERROR));
             return false;
         }
     }
