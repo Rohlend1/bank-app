@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.12</version>
+        <version>3.1.5</version>
     </parent>
     <groupId>org.bank</groupId>
     <artifactId>bank-app</artifactId>
@@ -24,12 +24,19 @@
         <module>discovery-server</module>
         <module>transaction-service</module>
         <module>api-gateway</module>
+        <module>notification-service</module>
     </modules>
     <dependencies>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bankApp</groupId>
+            <artifactId>global-utils</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <dependency>

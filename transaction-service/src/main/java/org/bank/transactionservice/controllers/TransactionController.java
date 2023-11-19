@@ -21,8 +21,9 @@ public class TransactionController {
 
     @PostMapping
     @CircuitBreaker(name = "transaction", fallbackMethod = "fallback")
-    public void transferMoney(@RequestBody TransferMoneyDto dto){
+    public String transferMoney(@RequestBody TransferMoneyDto dto){
         transactionService.transferMoney(dto);
+        return "TRANSACTION IS SUCCESSFUL";
     }
 
     @GetMapping

@@ -11,12 +11,15 @@ import org.bank.accountmanagementservice.services.UserAccountService;
 import org.bank.accountmanagementservice.utils.enums.AccountType;
 import org.bank.accountmanagementservice.utils.errors.ModelNotFoundException;
 import org.bank.accountmanagementservice.utils.mappers.UserAccountMapper;
+import org.bankApp.kafka.KafkaMessage;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +33,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     private final UserAccountMapper userAccountMapper;
 
     private final UserRepository userRepository;
+
+    private final KafkaTemplate<Long, Object> kafkaTemplate;
 
 
     @Transactional(readOnly = true)
@@ -71,6 +76,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         if(isAllowed(senderAccount, receiverAccount, transactionAmount)){
             senderAccount.setBalance(senderAccount.getBalance().subtract(transactionAmount));
             receiverAccount.setBalance(receiverAccount.getBalance().add(transactionAmount));
+            kafkaTemplate.send("notification-topic", new KafkaMessage(LocalDateTime.now(), "SUCCESSFUL TRANSACTION-"+UUID.randomUUID()));
             return true;
         }
         else{
