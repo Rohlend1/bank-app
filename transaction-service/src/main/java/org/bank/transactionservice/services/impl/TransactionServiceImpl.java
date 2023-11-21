@@ -73,13 +73,13 @@ public class TransactionServiceImpl implements TransactionService {
         }
         catch (Exception e){
             if(e.getMessage() != null)
-                return new ResponseMessage(HttpStatus.BAD_REQUEST, e.getMessage(), LocalDateTime.now());
-            return new ResponseMessage(HttpStatus.SERVICE_UNAVAILABLE, "Service is unavailable try to transfer money later ", LocalDateTime.now());
+                return new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), e.getMessage(), LocalDateTime.now());
+            return new ResponseMessage(HttpStatus.SERVICE_UNAVAILABLE, HttpStatus.SERVICE_UNAVAILABLE.value(), "Service is unavailable try to transfer money later ", LocalDateTime.now());
         }
         finally {
             lock.unlockWrite(stamp);
         }
-        return new ResponseMessage(HttpStatus.OK, "TRANSACTION SUCCESSFUL", LocalDateTime.now());
+        return new ResponseMessage(HttpStatus.OK, HttpStatus.OK.value(), "TRANSACTION SUCCESSFUL", LocalDateTime.now());
     }
 
     public List<Transaction> findAll() {
