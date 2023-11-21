@@ -77,11 +77,11 @@ public class UserAccountServiceImpl implements UserAccountService {
         if(isAllowed(senderAccount, receiverAccount, transactionAmount)){
             senderAccount.setBalance(senderAccount.getBalance().subtract(transactionAmount));
             receiverAccount.setBalance(receiverAccount.getBalance().add(transactionAmount));
-            kafkaTemplate.send("notification-topic", new KafkaMessage(LocalDateTime.now(), "SUCCESSFUL TRANSACTION", receiverAccount.getNumber(), MessageType.TRANSACTION));
+            kafkaTemplate.send("notification-topic", new KafkaMessage(LocalDateTime.now(), "SUCCESSFUL TRANSACTION", receiverAccount.getUser().getUniqueUserId(), MessageType.TRANSACTION));
             return true;
         }
         else{
-            kafkaTemplate.send("notification-topic", new KafkaMessage(LocalDateTime.now(), "TRANSACTION FAILED", senderAccount.getNumber(), MessageType.ERROR));
+            kafkaTemplate.send("notification-topic", new KafkaMessage(LocalDateTime.now(), "TRANSACTION FAILED", senderAccount.getUser().getUniqueUserId(), MessageType.ERROR));
             return false;
         }
     }
