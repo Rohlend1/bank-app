@@ -2,6 +2,7 @@ package org.bank.transactionservice.services.impl;
 
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bank.transactionservice.dto.TransferMoneyDto;
 import org.bank.transactionservice.models.Transaction;
 import org.bank.transactionservice.repositories.TransactionRepository;
@@ -9,19 +10,24 @@ import org.bank.transactionservice.services.TransactionService;
 import org.bank.transactionservice.utils.enums.Status;
 import org.bank.transactionservice.utils.errors.TransactionFailedException;
 import org.bank.transactionservice.utils.mappers.TransactionMapper;
+import org.bankApp.response.ResponseMessage;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.locks.StampedLock;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
@@ -35,7 +41,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Retry(name = "transaction")
-    public void transferMoney(TransferMoneyDto dto) {
+    public ResponseMessage transferMoney(TransferMoneyDto dto) {
         long stamp = lock.writeLock();
         try {
             MultiValueMap<String, String> parametersToCheck = new LinkedMultiValueMap<>();
@@ -48,6 +54,11 @@ public class TransactionServiceImpl implements TransactionService {
                                     uriBuilder.queryParams(parametersToCheck).build())
                     .retrieve()
                     .bodyToMono(Boolean.class)
+                    .onErrorResume(e->{
+                            log.info(e.getMessage());
+                            log.info(e.getCause().toString());
+                            return Mono.just(false);
+        })
                     .block();
 
             Transaction transaction = transactionMapper.toEntity(dto);
@@ -57,15 +68,18 @@ public class TransactionServiceImpl implements TransactionService {
                 transactionRepository.save(transaction);
             } else {
                 transaction.setStatus(Status.CANCELED);
-                throw new TransactionFailedException();
+                throw new TransactionFailedException("Insufficient funds or impossible to perform a transaction between accounts");
             }
         }
         catch (Exception e){
-            throw new TransactionFailedException();
+            if(e.getMessage() != null)
+                return new ResponseMessage(HttpStatus.BAD_REQUEST, e.getMessage(), LocalDateTime.now());
+            return new ResponseMessage(HttpStatus.SERVICE_UNAVAILABLE, "Service is unavailable try to transfer money later ", LocalDateTime.now());
         }
         finally {
             lock.unlockWrite(stamp);
         }
+        return new ResponseMessage(HttpStatus.OK, "TRANSACTION SUCCESSFUL", LocalDateTime.now());
     }
 
     public List<Transaction> findAll() {

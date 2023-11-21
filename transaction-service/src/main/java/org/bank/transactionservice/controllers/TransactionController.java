@@ -1,11 +1,11 @@
 package org.bank.transactionservice.controllers;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.bank.transactionservice.dto.TransferMoneyDto;
 import org.bank.transactionservice.models.Transaction;
 import org.bank.transactionservice.services.TransactionService;
 import org.bank.transactionservice.utils.errors.TransactionFailedException;
+import org.bankApp.response.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +20,8 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping
-    @CircuitBreaker(name = "transaction", fallbackMethod = "fallback")
-    public String transferMoney(@RequestBody TransferMoneyDto dto){
-        transactionService.transferMoney(dto);
-        return "TRANSACTION IS SUCCESSFUL";
+    public ResponseMessage transferMoney(@RequestBody TransferMoneyDto dto){
+        return transactionService.transferMoney(dto);
     }
 
     @GetMapping
@@ -37,8 +35,4 @@ public class TransactionController {
         return String.format("%s \nwas caught at %s", e.getMessage(), LocalDateTime.now());
     }
 
-    @ResponseStatus(code = HttpStatus.SERVICE_UNAVAILABLE)
-    public String fallback(TransferMoneyDto dto, Throwable throwable){
-        return "Service is not working try to transfer money later";
-    }
 }
