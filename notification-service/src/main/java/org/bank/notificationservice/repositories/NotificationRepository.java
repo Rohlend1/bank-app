@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    List<Notification> findAllByAccountNumberEquals(UUID accountNumber);
+    List<Notification> findAllByUserUniqueNumber(UUID userUniqueNumber);
 }

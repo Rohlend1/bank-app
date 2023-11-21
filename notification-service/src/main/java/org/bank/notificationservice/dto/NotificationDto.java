@@ -15,7 +15,7 @@ public class NotificationDto {
 
     private LocalDateTime timestamp;
 
-    private UUID accountNumber;
+    private UUID userUniqueNumber;
 
     private MessageType type;
 }

@@ -20,7 +20,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping("/{number}")
-    public List<NotificationDto> findAllByAccountNumber(@PathVariable("number")UUID accountNumber){
-        return notificationService.findAllByAccountNumber(accountNumber);
+    public List<NotificationDto> findAllByAccountNumber(@PathVariable("number")UUID userUniqueNumber){
+        return notificationService.findAllByUserUniqueNumber(userUniqueNumber);
     }
 }

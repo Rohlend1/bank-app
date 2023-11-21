@@ -55,8 +55,9 @@ public class TransactionServiceImpl implements TransactionService {
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .onErrorResume(e->{
-                            log.info(e.getMessage());
-                            log.info(e.getCause().toString());
+                            if(e.getMessage() == null){
+                                throw new TransactionFailedException();
+                            }
                             return Mono.just(false);
         })
                     .block();

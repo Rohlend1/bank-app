@@ -25,6 +25,7 @@
         <module>transaction-service</module>
         <module>api-gateway</module>
         <module>notification-service</module>
+        <module>authentication-service</module>
     </modules>
     <dependencies>
 

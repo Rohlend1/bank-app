@@ -30,7 +30,7 @@ public class NotificationService {
     }
 
     @Transactional(readOnly = true)
-    public List<NotificationDto> findAllByAccountNumber(UUID accountNumber){
-        return notificationMapper.toDtoList(notificationRepository.findAllByAccountNumberEquals(accountNumber));
+    public List<NotificationDto> findAllByUserUniqueNumber(UUID userUniqueNumber){
+        return notificationMapper.toDtoList(notificationRepository.findAllByUserUniqueNumber(userUniqueNumber));
     }
 }

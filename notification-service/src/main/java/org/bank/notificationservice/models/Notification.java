@@ -22,8 +22,8 @@ public class Notification {
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
 
-    @Column(name = "account_number")
-    private UUID accountNumber;
+    @Column(name = "user_unique_number")
+    private UUID userUniqueNumber;
 
     @Enumerated(EnumType.STRING)
     private MessageType type;
