@@ -18,4 +18,6 @@ public class NotificationDto {
     private UUID userUniqueNumber;
 
     private MessageType type;
+
+    private Boolean seen;
 }

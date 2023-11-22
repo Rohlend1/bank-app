@@ -21,7 +21,7 @@ public class UserController {
         return userService.save(user);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public UserDto findById(@PathVariable("id")String id){
         return userService.findByUniqueId(id);
     }
