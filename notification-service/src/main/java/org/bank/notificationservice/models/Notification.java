@@ -27,4 +27,7 @@ public class Notification {
 
     @Enumerated(EnumType.STRING)
     private MessageType type;
+
+    @Column(name = "seen")
+    private Boolean seen;
 }

@@ -20,6 +20,8 @@ public class KeycloakUser {
 
     private List<Credential> credentials;
 
+    private List<String> realmRoles;
+
     private Boolean enabled;
 
     private String email;

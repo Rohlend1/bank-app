@@ -24,9 +24,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -53,8 +51,9 @@ public class UserServiceImpl implements UserService {
         keycloakUser.setUsername(user.getFirstName()+" "+user.getLastName());
         keycloakUser.setEnabled(true);
         keycloakUser.setCredentials(new ArrayList<>(List.of(new Credential("password",requestDto.getPassword(),false))));
-        log.info(keycloak.tokenManager().getAccessTokenString());
-        log.info(BodyInserters.fromValue(keycloakUser).toString());
+        keycloakUser.setEmailVerified(true);
+        keycloakUser.setRealmRoles(new ArrayList<>(List.of("ROLE_USER")));
+        log.info(keycloakUser.toString());
         try{
             webClient.post()
                     .uri(registerUrl)

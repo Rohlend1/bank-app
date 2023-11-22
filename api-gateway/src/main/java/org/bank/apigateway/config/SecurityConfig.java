@@ -45,7 +45,7 @@ public class SecurityConfig {
                 .disable()
                 .authorizeExchange(exchange->
                         exchange
-                                .pathMatchers("/eureka/**")
+                                .pathMatchers("/user/**")
                                 .permitAll()
                                 .anyExchange()
                                 .authenticated())
