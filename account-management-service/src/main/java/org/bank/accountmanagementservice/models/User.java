@@ -44,9 +44,4 @@ public class User {
 
     @Column(name = "phone_number")
     private String phoneNumber;
-
-    @PrePersist
-    public void generateUniqueUserId(){
-        uniqueUserId = UUID.randomUUID();
-    }
 }

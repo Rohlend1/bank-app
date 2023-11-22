@@ -18,6 +18,8 @@ public class KeycloakUser {
 
     private String username;
 
+    private String uniqueUserId;
+
     private List<Credential> credentials;
 
     private List<String> realmRoles;
