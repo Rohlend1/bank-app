@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,9 +25,9 @@ public class TransactionController {
         return transactionService.transferMoney(dto);
     }
 
-    @GetMapping
-    public List<Transaction> findAll(){
-        return transactionService.findAll();
+    @GetMapping("/{id}")
+    public List<Transaction> findAllByAccountNumber(@PathVariable("id")UUID accountNumber){
+        return transactionService.findAllByAccountNumber(accountNumber);
     }
 
     @ExceptionHandler(value = {TransactionFailedException.class})

@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.locks.StampedLock;
 
 @Service
@@ -83,7 +84,7 @@ public class TransactionServiceImpl implements TransactionService {
         return new ResponseMessage(HttpStatus.OK, HttpStatus.OK.value(), "TRANSACTION SUCCESSFUL", LocalDateTime.now());
     }
 
-    public List<Transaction> findAll() {
+    public List<Transaction> findAllByAccountNumber(UUID accountNumber) {
         return transactionRepository.findAll();
     }
 }
