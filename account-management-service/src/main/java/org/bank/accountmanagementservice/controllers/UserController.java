@@ -2,8 +2,10 @@ package org.bank.accountmanagementservice.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.bank.accountmanagementservice.dto.UserDto;
+import org.bank.accountmanagementservice.dto.UserRequestDto;
 import org.bank.accountmanagementservice.dto.UserUpdateDto;
 import org.bank.accountmanagementservice.services.UserService;
+import org.bankApp.response.ResponseMessage;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -15,8 +17,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public void save(@RequestBody UserDto user){
-        userService.save(user);
+    public ResponseMessage save(@RequestBody UserRequestDto user){
+        return userService.save(user);
     }
 
     @GetMapping("{id}")

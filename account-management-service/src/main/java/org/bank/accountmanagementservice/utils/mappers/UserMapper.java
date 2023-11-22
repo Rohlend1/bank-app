@@ -2,6 +2,7 @@ package org.bank.accountmanagementservice.utils.mappers;
 
 import org.bank.accountmanagementservice.dto.UserAccountDto;
 import org.bank.accountmanagementservice.dto.UserDto;
+import org.bank.accountmanagementservice.dto.UserRequestDto;
 import org.bank.accountmanagementservice.dto.UserUpdateDto;
 import org.bank.accountmanagementservice.models.User;
 import org.bank.accountmanagementservice.models.UserAccount;
@@ -24,6 +25,11 @@ public interface UserMapper {
 
     @Mapping(target = "userAccounts", expression = "java(getUserAccount(dto.getUserAccountsIds()))")
     User toEntity(UserUpdateDto dto);
+
+    @Mapping(target = "firstName", source = "firstName")
+    @Mapping(target = "lastName", source = "lastName")
+    @Mapping(target = "patronymic", source = "patronymic")
+    UserDto toUserDto(UserRequestDto user);
 
     default Set<Long> getUserAccountIds(Set<UserAccount> userAccounts){
         return userAccounts == null ? new HashSet<>() : userAccounts.stream().map(UserAccount::getId).collect(Collectors.toSet());
