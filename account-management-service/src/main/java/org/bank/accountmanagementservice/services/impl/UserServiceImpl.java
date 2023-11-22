@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toEntity(userMapper.toUserDto(requestDto));
         user.setUniqueUserId(UUID.randomUUID());
         KeycloakUser keycloakUser = keycloakUserMapper.toKeycloakUser(requestDto);
-        keycloakUser.setUniqueUserId(user.getUniqueUserId().toString());
+        keycloakUser.setId(user.getUniqueUserId().toString());
         keycloakUser.setUsername(user.getFirstName()+" "+user.getLastName());
         keycloakUser.setEnabled(true);
         keycloakUser.setCredentials(new ArrayList<>(List.of(new Credential("password",requestDto.getPassword(),false))));

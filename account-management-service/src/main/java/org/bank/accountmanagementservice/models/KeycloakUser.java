@@ -18,7 +18,7 @@ public class KeycloakUser {
 
     private String username;
 
-    private String uniqueUserId;
+    private String id;
 
     private List<Credential> credentials;
 
