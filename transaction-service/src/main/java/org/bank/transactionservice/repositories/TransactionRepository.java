@@ -13,6 +13,6 @@ import java.util.UUID;
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
 
     @Query("SELECT t FROM Transaction t WHERE t.receiverAccountNumber = :accountNumber OR t.senderAccountNumber = :accountNumber")
-    List<Transaction> findTransactionsByAccountNumber(@Param("accountNumber") UUID accountNumber);
+    List<Transaction> findTransactionsByAccountNumber(@Param("accountNumber") String accountNumber);
 
 }

@@ -85,6 +85,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     public List<Transaction> findAllByAccountNumber(UUID accountNumber) {
-        return transactionRepository.findAll();
+        return transactionRepository.findTransactionsByAccountNumber(accountNumber.toString());
     }
 }

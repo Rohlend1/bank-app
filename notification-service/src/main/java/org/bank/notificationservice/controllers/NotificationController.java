@@ -3,10 +3,7 @@ package org.bank.notificationservice.controllers;
 import lombok.RequiredArgsConstructor;
 import org.bank.notificationservice.dto.NotificationDto;
 import org.bank.notificationservice.services.NotificationService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,5 +19,10 @@ public class NotificationController {
     @GetMapping("/{number}")
     public List<NotificationDto> findAllByAccountNumber(@PathVariable("number")UUID userUniqueNumber){
         return notificationService.findAllByUserUniqueNumber(userUniqueNumber);
+    }
+
+    @PostMapping("/{id}")
+    public void setSeenNotification(@PathVariable("id")Long id){
+        notificationService.setSeenNotification(id);
     }
 }

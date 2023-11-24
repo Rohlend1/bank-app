@@ -5,6 +5,7 @@ import org.bank.notificationservice.dto.NotificationDto;
 import org.bank.notificationservice.mappers.NotificationMapper;
 import org.bank.notificationservice.models.Notification;
 import org.bank.notificationservice.repositories.NotificationRepository;
+import org.bank.notificationservice.utils.errors.NotificationNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,5 +38,10 @@ public class NotificationService {
     @Transactional(readOnly = true)
     public List<NotificationDto> findAllByUserUniqueNumber(UUID userUniqueNumber){
         return notificationMapper.toDtoList(notificationRepository.findAllByUserUniqueNumber(userUniqueNumber));
+    }
+
+    public void setSeenNotification(Long id){
+        Notification notification = notificationRepository.findById(id).orElseThrow(()-> new NotificationNotFoundException(id));
+        notification.setSeen(true);
     }
 }
