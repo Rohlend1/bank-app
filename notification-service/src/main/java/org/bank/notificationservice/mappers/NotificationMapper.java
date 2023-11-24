@@ -18,7 +18,6 @@ public interface NotificationMapper {
     @Mapping(target = "message", source = "message")
     @Mapping(target = "timestamp", source = "timestamp")
     @Mapping(target = "type", source = "type")
-    @Mapping(target = "seen", source = "seen")
     NotificationDto toDto(KafkaMessage message);
 
     List<Notification> toEntityList(List<NotificationDto> dto);

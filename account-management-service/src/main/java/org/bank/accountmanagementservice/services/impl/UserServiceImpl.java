@@ -1,12 +1,12 @@
 package org.bank.accountmanagementservice.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.bank.accountmanagementservice.dto.UserDto;
 import org.bank.accountmanagementservice.dto.UserRequestDto;
 import org.bank.accountmanagementservice.dto.UserUpdateDto;
 import org.bank.accountmanagementservice.models.KeycloakUser;
 import org.bank.accountmanagementservice.models.User;
+import org.bank.accountmanagementservice.models.UserInfo;
 import org.bank.accountmanagementservice.repositories.UserRepository;
 import org.bank.accountmanagementservice.services.UserService;
 import org.bank.accountmanagementservice.utils.Credential;
@@ -29,7 +29,6 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class UserServiceImpl implements UserService {
 
 
@@ -47,15 +46,12 @@ public class UserServiceImpl implements UserService {
 
     public ResponseMessage save(UserRequestDto requestDto){
         User user = userMapper.toEntity(userMapper.toUserDto(requestDto));
-        user.setUniqueUserId(UUID.randomUUID());
         KeycloakUser keycloakUser = keycloakUserMapper.toKeycloakUser(requestDto);
-        keycloakUser.setId(user.getUniqueUserId().toString());
         keycloakUser.setUsername(user.getFirstName()+" "+user.getLastName());
         keycloakUser.setEnabled(true);
         keycloakUser.setCredentials(new ArrayList<>(List.of(new Credential("password",requestDto.getPassword(),false))));
         keycloakUser.setEmailVerified(true);
         keycloakUser.setRealmRoles(new ArrayList<>(List.of("ROLE_USER")));
-        log.info(keycloakUser.toString());
         try{
             webClient.post()
                     .uri(registerUrl)
@@ -65,11 +61,19 @@ public class UserServiceImpl implements UserService {
                     .retrieve()
                     .bodyToMono(Void.class)
                     .block();
+            UserInfo userInfo = webClient.get()
+                    .uri(String.format("%s?username=%s", registerUrl, keycloakUser.getUsername()))
+                    .header("Authorization", "Bearer " + keycloak.tokenManager().getAccessTokenString())
+                    .retrieve()
+                    .bodyToFlux(UserInfo.class)
+                    .blockFirst();
+
+            user.setUniqueUserId(UUID.fromString(userInfo.getId()));
+
             userRepository.save(user);
             return new ResponseMessage(HttpStatus.OK, HttpStatus.OK.value(), "SUCCESSFUL REGISTRATION", LocalDateTime.now());
         }
         catch (Exception e){
-            log.info(e.getMessage());
             e.printStackTrace();
             return new ResponseMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), "Wrong credentials", LocalDateTime.now());
         }
