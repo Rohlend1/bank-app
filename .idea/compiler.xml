@@ -24,9 +24,12 @@
         <module name="account-management-service" />
         <module name="transaction-service" />
         <module name="discovery-server" />
+        <module name="global-utils" />
+        <module name="notification-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="authentication-service" target="17" />
       <module name="demo" target="1.5" />
     </bytecodeTargetLevel>
   </component>
@@ -34,9 +37,12 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="account-management-service" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="api-gateway" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+      <module name="authentication-service" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="bank-app" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="demo" options="" />
       <module name="discovery-server" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+      <module name="global-utils" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+      <module name="notification-service" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="transaction-service" options="-parameters -Amapstruct.defaultComponentModel=spring" />
     </option>
   </component>

@@ -1,0 +1,10 @@
+FROM maven
+
+WORKDIR /app/backend
+
+COPY . .
+
+RUN mvn clean package -DskipTests=true
+
+
+CMD ["java","-jar","target/bank-app.jar"]

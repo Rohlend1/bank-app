@@ -44,3 +44,25 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+  backend:
+    build:
+      dockerfile: Dockerfile-backend
+    networks:
+      - backend_network
+    ports:
+      - "8765:8765"
+  postgres:
+    image: postgres:15-alpine
+    volumes:
+      - ./postgres/:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_DB=dictionary_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - backend_network
+networks:
+  backend_network:
+    driver: bridge
